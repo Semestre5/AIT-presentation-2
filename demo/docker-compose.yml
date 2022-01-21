@@ -1,0 +1,46 @@
+version: "3.5"
+
+services :
+  backend1:
+       container_name: backend1
+       build:
+         context: ./backend
+         dockerfile: Dockerfile
+       networks:
+         heig:
+           ipv4_address: 192.168.42.11
+
+  backend2:
+       container_name: backend2
+       build:
+         context: ./backend
+         dockerfile: Dockerfile
+       networks:
+         heig:
+           ipv4_address: 192.168.42.12
+       ports:
+         - "4001:3000"
+
+  varnish:
+       container_name: my-varnish
+       build:
+         context: ./varnish
+         dockerfile: Dockerfile
+       ports:
+         - 80:80
+       expose:
+         - 80
+       networks:
+         heig:
+           ipv4_address: 192.168.42.10
+       environment:
+            - VARNISH_SIZE=2G
+
+networks:
+    heig:
+        name: heig
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 192.168.42.0/24
