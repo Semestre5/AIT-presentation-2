@@ -1,0 +1,2 @@
+curl -sSL -D - http://localhost:80 -o /dev/null
+curl -sSL -D - http://localhost:80/image1.jpg -o /dev/null
